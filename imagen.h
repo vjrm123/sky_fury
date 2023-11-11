@@ -27,7 +27,7 @@ class Imagen {
             rect_perdiste.h = imagen_perdiste->h;
 
             SDL_FreeSurface(imagen_perdiste);
-
+             
             SDL_RenderCopy(renderizador, textura_perdiste, NULL, &rect_perdiste);
 
             SDL_RenderPresent(renderizador);

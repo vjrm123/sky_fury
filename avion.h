@@ -64,7 +64,7 @@ class Avion {
             SDL_RenderCopy(renderizador, textura, nullptr, &rectangulo);
         }
 
-
+         
 
         void mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& salir);
 

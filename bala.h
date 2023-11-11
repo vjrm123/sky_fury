@@ -32,7 +32,7 @@ public:
         SDL_DestroyTexture(textura);
         
         
-    }
+    } 
 
 
     void mover_proyectil(SDL_Renderer* renderizador) override {

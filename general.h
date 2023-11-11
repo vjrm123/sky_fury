@@ -410,7 +410,7 @@ public:
             SDL_DestroyTexture(textura_textos);
 
 
-
+    
             SDL_RenderPresent(renderizador);
 
             SDL_Delay(1);

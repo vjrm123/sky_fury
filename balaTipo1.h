@@ -6,4 +6,4 @@ public:
         textura = SDL_CreateTextureFromSurface(renderizador, superficie);
         SDL_FreeSurface(superficie);
     }
-};
+}; 
