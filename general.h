@@ -62,7 +62,7 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
         }
     }
 
-    if (teclas[SDL_SCANCODE_D] && Bala::alarma(10)) {
+    if (teclas[SDL_SCANCODE_D] && Bala::alarma(25)) {
         for (EnemigoBase* enemigor : enemigos1) {
             misiles.push_back(new Misil(coordenada_x + (ANCHO_AVION / 2) - 10, coordenada_y, renderizador, enemigor));
         }

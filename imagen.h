@@ -21,10 +21,10 @@ class Imagen {
             SDL_Texture* textura_perdiste = SDL_CreateTextureFromSurface(renderizador, imagen_perdiste);
 
             SDL_Rect rect_perdiste;
-            rect_perdiste.x = 800 / 2 - imagen_perdiste->w / 2;
-            rect_perdiste.y = 600 / 2 - imagen_perdiste->h / 2;
-            rect_perdiste.w = imagen_perdiste->w;
-            rect_perdiste.h = imagen_perdiste->h;
+            rect_perdiste.x = 0;
+            rect_perdiste.y = 0;
+            rect_perdiste.w = 800;
+            rect_perdiste.h = 600;
 
             SDL_FreeSurface(imagen_perdiste);
              
@@ -32,7 +32,7 @@ class Imagen {
 
             SDL_RenderPresent(renderizador);
 
-            SDL_Delay(2000);
+            SDL_Delay(5000);
 
             SDL_DestroyTexture(textura_perdiste);
         }
