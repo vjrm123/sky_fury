@@ -15,7 +15,7 @@ const int ALTO_BALA = 50;
 
 
 class Bala : public Proyectil {
-private:
+protected:
     SDL_Texture* textura = nullptr;
 public:
     
@@ -39,7 +39,7 @@ public:
         
         if (y >= 0) {
            
-            y-=3     ;
+            y-=4     ;
             SDL_Rect rectangulo = { x, y, ANCHO_BALA, ALTO_BALA };
             SDL_RenderCopy(renderizador, textura, NULL, &rectangulo);
         }
@@ -55,6 +55,7 @@ public:
     }
 
     void pintar_proyectil(SDL_Renderer* renderizador) override {
+        
         SDL_Rect rectangulo = { x, y, ANCHO_BALA, ALTO_BALA };
         SDL_RenderCopy(renderizador, textura, NULL, &rectangulo);
     }

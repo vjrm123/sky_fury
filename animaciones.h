@@ -10,13 +10,13 @@ class Animacion {
 
 private:
     int x, y;
-    int frame_actual;
+    int frame_actual=1;
 
 public:
-    Animacion(int x, int y) : x(x), y(y), frame_actual{1} {}
+    Animacion(int x, int y) : x(x), y(y), frame_actual(1) {}
 
     bool avanzar(SDL_Renderer* renderizador) {
-        if (frame_actual >= 4) {
+        if (frame_actual >= 6) {
             return false;  
         }
 

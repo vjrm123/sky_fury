@@ -1,4 +1,3 @@
-
 #ifndef ENEMIGO_H
 #define ENEMIGO_H
 
@@ -82,9 +81,8 @@ class Enemigo1 : public EnemigoBase {
 			tiempo_anterior = tiempo_actual;
 
 			x += direccion ;
-			if ((x > 800 - ANCHO_ENEMIGO1 || x < 0) && SDL_GetTicks() - ultimo_cambio_direccion > 40) {
+			if ((x > 800 - ANCHO_ENEMIGO1 || x < 0) ) {
 				direccion *= -1;
-				ultimo_cambio_direccion = SDL_GetTicks();
 			}
 
 			if (y >= 600) {
@@ -110,7 +108,7 @@ class Enemigo1 : public EnemigoBase {
 
 		void choque_enemigo(Avion& avion, Musica& musica, SDL_Renderer* renderizador) override {
 
-			if (x >= avion.getcoordenada_x() && x < avion.getcoordenada_x() + 64 && y >= avion.getcoordenada_y() && y <= avion.getcoordenada_y() + 64) {
+			if (x >= avion.getcoordenada_x() && x < avion.getcoordenada_x() + 80 && y >= avion.getcoordenada_y() && y <= avion.getcoordenada_y() + 80) {
 				avion.reducirVida();
 				avion.pintar_avion(renderizador);
 				random_device rd;

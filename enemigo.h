@@ -11,7 +11,7 @@ class EnemigoBase {
 protected:
     int x;
     int y;
-    SDL_Renderer* renderizador = nullptr;
+  
 public:
     EnemigoBase(int x, int y, SDL_Renderer* renderizador) : x(x), y(y) {}
 

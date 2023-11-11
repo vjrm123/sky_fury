@@ -20,10 +20,10 @@ public:
     Musica() {
         Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
         sonido_disparo = Mix_LoadWAV("disparo.wav");
-        sonido_colision = Mix_LoadWAV("muerteavion.wav");
+        sonido_colision = Mix_LoadWAV("sonidos/Explosion.wav");
         sonido_misil = Mix_LoadWAV("sonidos/sonido_misil.wav");
-        sonido_boton = Mix_LoadWAV("sonido de boton.wav");
-        sonido_colision_enemigo1 = Mix_LoadWAV("colision_enemigo1.wav");
+        sonido_boton = Mix_LoadWAV("sonidos/Button.wav");
+        sonido_colision_enemigo1 = Mix_LoadWAV("sonidos/sonidos_bala.wav");
         sonido_bala = Mix_LoadWAV("sonidos/sonido_balas.MPEG");
     }
 

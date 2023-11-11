@@ -10,7 +10,7 @@ const int ALTO_MISIL = 70;
 
 class Misil : public Proyectil {
 private:
-    EnemigoBase* objetivo =nullptr;
+    EnemigoBase* objetivo = nullptr;
     SDL_Texture* textura = nullptr;
     bool debeSerDestruido = false;
     float velocidad{ 2.0 };
@@ -24,8 +24,6 @@ public:
     ~Misil()
     {
         SDL_DestroyTexture(textura);
-
-
     }
 
     void mover_proyectil(SDL_Renderer* renderizador) override {

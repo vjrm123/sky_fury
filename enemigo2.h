@@ -26,7 +26,7 @@ public:
 
     Enemigo2(int x, int y, SDL_Renderer* renderizador) : EnemigoBase(x, y, renderizador), velocidad_y{ 1 }, vidas{ 6 } {
         
-        SDL_Surface* superficie = IMG_Load("avion2.png");
+        SDL_Surface* superficie = IMG_Load("imagenes/enemigo2.png");
         textura = SDL_CreateTextureFromSurface(renderizador, superficie);
         SDL_FreeSurface(superficie);
     }
@@ -57,7 +57,7 @@ public:
     }
 
     void choque_enemigo(Avion& aviones, Musica& musica, SDL_Renderer* renderizador) override {
-        if (x >= aviones.getcoordenada_x() && x < aviones.getcoordenada_x() + 40 && y >= aviones.getcoordenada_y() && y <= aviones.getcoordenada_y() + 40) {
+        if (x >= aviones.getcoordenada_x() && x < aviones.getcoordenada_x() + 50 && y >= aviones.getcoordenada_y() && y <= aviones.getcoordenada_y() + 50) {
             aviones.pintar_avion(renderizador);
             
             random_device rd;

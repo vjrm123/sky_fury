@@ -7,15 +7,15 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <iterator>
-#include "avion.h"
 #include "bala.h"
 #include "enemigo.h"
 #include "enemigo2.h"
 #include "enemigo1.h"
 #include "imagen.h"
 #include "proyectil.h"
+#include "animaciones.h"
 #include "misil.h"
+#include "balaTipo1.h"
 #include <list>
 #include <SDL_ttf.h>
 const int ANCHO_VENTANAs = 800;
@@ -25,29 +25,28 @@ list<Proyectil*> balas;
 list<Proyectil*> misiles;
 list<EnemigoBase*> enemigos1;
 list<EnemigoBase*> enemigos2;
+std::list<Animacion*> animaciones;
 
 
 Musica musicas;
-Enemigo1 enemigo1;
-Enemigo2 enemigo2;
 Imagen imagenes;
 
 void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& salir) {
     const Uint8* teclas = SDL_GetKeyboardState(nullptr);
 
-    if (teclas[SDL_SCANCODE_SPACE] && Bala::alarma(10)) {
-        if (vidas <= 4) {
+    if (teclas[SDL_SCANCODE_SPACE] && Bala::alarma(15)) {
+        if (vidas <= 3) {
             
             balas.push_back(new Bala(coordenada_x, coordenada_y, renderizador)); 
             balas.push_back(new Bala(coordenada_x + ANCHO_AVION, coordenada_y, renderizador)); 
-            balas.push_back(new Bala(coordenada_x + (ANCHO_AVION / 2) - 10, coordenada_y, renderizador));
+            balas.push_back(new BalaTipo1(coordenada_x + (ANCHO_AVION / 2) - 10, coordenada_y, renderizador));
         }
         else {
             
             balas.push_back(new Bala(coordenada_x + (ANCHO_AVION / 2) - 10, coordenada_y, renderizador));
         }
 
-    }
+    } 
 
     for (auto it = balas.begin(); it != balas.end(); ) {
         Proyectil* b = *it;
@@ -55,7 +54,7 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
         b->mover_proyectil(renderizador);
 
         if (b->gety() <= 1) {
-            delete b;
+            delete b; 
             it = balas.erase(it);
         }
         else {
@@ -63,7 +62,7 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
         }
     }
 
-    if (teclas[SDL_SCANCODE_D] && Bala::alarma(20)) {
+    if (teclas[SDL_SCANCODE_D] && Bala::alarma(10)) {
         for (EnemigoBase* enemigor : enemigos1) {
             misiles.push_back(new Misil(coordenada_x + (ANCHO_AVION / 2) - 10, coordenada_y, renderizador, enemigor));
         }
@@ -118,10 +117,11 @@ public:
         
 
 
-        SDL_Window* ventana = SDL_CreateWindow("Mi ventana", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA, ALTO_VENTANA, SDL_WINDOW_SHOWN);
+        SDL_Window* ventana = SDL_CreateWindow("        VENTANA DE SKY FURY        ", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA, ALTO_VENTANA, SDL_WINDOW_SHOWN);
         SDL_Renderer* renderizador = SDL_CreateRenderer(ventana, -1, 0);
 
-        SDL_Texture* textura_fondo = IMG_LoadTexture(renderizador, "desierto.png");
+        // Supongamos que tienes las siguientes variables
+        SDL_Texture* textura_fondo = IMG_LoadTexture(renderizador, "imagenes/fondo1.png");
 
         /*comensar*/
         
@@ -161,7 +161,7 @@ public:
 
         Avion avion(ANCHO_VENTANA / 2 - ANCHO_AVION / 2, ALTO_VENTANA / 2 - ALTO_AVION / 2 +100, 6, renderizador);
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             enemigos1.push_back(new Enemigo1(rand() % 800, -800, renderizador, 200, 8));
         }
 
@@ -179,8 +179,6 @@ public:
         bool juego_comenzado = false;
 
         while (!salir) {
-
-
             while (SDL_PollEvent(&evento)) {
                 if (evento.type == SDL_QUIT) {
                     salir = true;
@@ -198,18 +196,21 @@ public:
                         SDL_RenderCopy(renderizador, textura_3, nullptr, &rect_contador);
                         SDL_RenderPresent(renderizador);
                         SDL_Delay(1000); 
+                        musicas.reproducir_boton();
                         SDL_FreeSurface(superficie_3); 
 
                         SDL_RenderClear(renderizador);
                         SDL_RenderCopy(renderizador, textura_2, nullptr, &rect_contador);
                         SDL_RenderPresent(renderizador);
                         SDL_Delay(1000); 
+                        musicas.reproducir_boton();
                         SDL_FreeSurface(superficie_2); 
 
                         SDL_RenderClear(renderizador);
                         SDL_RenderCopy(renderizador, textura_1, nullptr, &rect_contador);
                         SDL_RenderPresent(renderizador);
                         SDL_Delay(1000); 
+                        musicas.reproducir_boton();
                         SDL_FreeSurface(superficie_1);
 
                         SDL_RenderClear(renderizador);
@@ -230,9 +231,7 @@ public:
 
             if (!juego_comenzado) {
 
-                
                 SDL_RenderCopy(renderizador, textura_boton, nullptr, &rect_boton);
-                SDL_RenderPresent(renderizador);
             }
             else {
 
@@ -261,14 +260,16 @@ public:
                         SDL_Rect rect_enemigo = (*itE)->getRect();
 
                         if (SDL_HasIntersection(&rect_bala, &rect_enemigo)) {
-                            imagenes.animar_colision((*itE)->getx(), (*itE)->gety());
+                            
                             musicas.reproducir_colision_enemigo1();
                             (*itE)->reducirVida();
 
                             if ((*itE)->getvidas() == 0) {
                                 delete* itE;
-                                avion.SumarPuntos();
+                                avion.SumarPuntos(10);
                                 itE = enemigos1.erase(itE);
+
+                                animaciones.push_back(new Animacion((*itB)->getx(), (*itB)->gety()));
                                 enemigos1.push_back(new Enemigo1(rand() % 800, -800, renderizador, 250, 8));
                             }
 
@@ -287,10 +288,15 @@ public:
                             SDL_Rect rect_enemigo2 = (*itE2)->getRect();
 
                             if (SDL_HasIntersection(&rect_bala, &rect_enemigo2)) {
+
+                                animaciones.push_back(new Animacion((*itE2)->getx(), (*itE2)->gety()));
+                                enemigos2.push_back(new Enemigo2(rand() % 800, -800, renderizador));
+                                musicas.reproducir_colision_enemigo1();
+
                                 delete* itE2;
                                 itE2 = enemigos2.erase(itE2);
                                 avion.SumarPuntos();
-                                enemigos2.push_back(new Enemigo2(rand() %800, -800, renderizador));
+
                                 delete* itB;
                                 itB = balas.erase(itB);
                                 balaEliminada = true;
@@ -305,22 +311,19 @@ public:
                     if (!balaEliminada) {
                         ++itB;
                     }
-                }
-
-                imagenes.actualizar_animaciones();
-                
+                } 
                 
                 for (auto itM = misiles.begin(); itM != misiles.end(); ) {
                     Misil* misil = dynamic_cast<Misil*>(*itM);  // Convertimos proyectil a misl
 
                     if (misil != NULL) {  // verificamos si la conversion fue exitosa
-                        
+
                         if (std::find(enemigos1.begin(), enemigos1.end(), misil->getObjetivo()) == enemigos1.end()) {
                             if (!enemigos1.empty()) {
-                                misil->setObjetivo(enemigos1.front());  
+                                misil->setObjetivo(enemigos1.front());
                             }
                             else {
-                                misil->setObjetivo(NULL);  
+                                misil->setObjetivo(NULL);
                             }
                         }
 
@@ -341,11 +344,13 @@ public:
                             SDL_Rect rect_enemigo = (*itE)->getRect();
 
                             if (SDL_HasIntersection(&rect_misil, &rect_enemigo)) {
+
                                 delete* itM;
                                 itM = misiles.erase(itM);
                                 avion.SumarPuntos();
                                 misilEliminado = true;
 
+                                animaciones.push_back(new Animacion((*itE)->getx(), (*itE)->gety()));
                                 enemigos1.push_back(new Enemigo1(rand() % 800, -800, renderizador, 250, 8));
 
                                 delete* itE;
@@ -362,12 +367,19 @@ public:
                         }
                     }
                 }
-
-
-
-
             }
-           
+
+            for (auto it = animaciones.begin(); it != animaciones.end(); ) {
+                if (!(*it)->avanzar(renderizador)) {
+                    delete* it;
+                    it = animaciones.erase(it);
+                }
+                else {
+                    ++it;
+                }
+            }
+            
+
             SDL_Color color = { 0, 0, 0 };
             std::string texto = "Vidas: " + std::to_string(avion.getvidas());
             
