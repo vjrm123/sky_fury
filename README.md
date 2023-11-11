@@ -4,4 +4,4 @@
 -Ramos mamani victor juan
 -Purguaya Cuba Dennis Cesar
 -Cordova choque eduardo
--Calsina Frank
+-Calcina Frank
