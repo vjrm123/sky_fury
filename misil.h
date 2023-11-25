@@ -3,6 +3,7 @@
 
 #include "proyectil.h"
 #include "enemigo.h"
+#include <vector>
 
 const int ANCHO_MISIL = 20;
 const int ALTO_MISIL = 70;

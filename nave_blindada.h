@@ -10,6 +10,7 @@
 #include "musica.h"
 #include "enemigo.h"
 #include <random>
+#include <vector>
 
 using namespace std;
 
@@ -79,8 +80,6 @@ class NaveBlindada : public EnemigoBase {
 			float deltaTiempo = (tiempo_actual - tiempo_anterior) / 1000.0f;
 			y += velocidad * deltaTiempo;
 			tiempo_anterior = tiempo_actual;
-			float aceleracion = 0.01f * deltaTiempo;
-			velocidad += aceleracion;
 
 			x += direccion ;
 			if ((x > 800 - ANCHO_NAVE_BLINDADA || x < 0) ) {

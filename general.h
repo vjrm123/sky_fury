@@ -1,6 +1,6 @@
 #ifndef GENERAL_H
 #define GENERAL_H
-
+#include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
