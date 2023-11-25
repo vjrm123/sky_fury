@@ -1,5 +1,5 @@
-#ifndef ENEMIGO_H
-#define ENEMIGO_H
+#ifndef NAVE_BLINDADA_H
+#define NAVE_BLINDADA_H
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -13,10 +13,10 @@
 
 using namespace std;
 
-const int ALTO_ENEMIGO1 = 60;
-const int ANCHO_ENEMIGO1 = 60;
+const int ALTO_NAVE_BLINDADA = 75;
+const int ANCHO_NAVE_BLINDADA = 75;
 
-class Enemigo1 : public EnemigoBase {
+class NaveBlindada : public EnemigoBase {
 	private:
 		
 		float velocidad;
@@ -32,7 +32,7 @@ class Enemigo1 : public EnemigoBase {
 	
 		
 	public:
-		Enemigo1(int x, int y, SDL_Renderer* renderizador, float velocidad, int vidas) : 
+		NaveBlindada(int x, int y, SDL_Renderer* renderizador, float velocidad, int vidas) : 
 			EnemigoBase(x, y, renderizador), direccion(1), tiempo_anterior(SDL_GetTicks()), velocidad(velocidad), vidas(vidas) {
 			
 			for (int i = 1; i < 6; i++) {
@@ -49,10 +49,10 @@ class Enemigo1 : public EnemigoBase {
 			fuente = TTF_OpenFont("letras.ttf", 24);
 		}
 
-		Enemigo1(){	}
+		NaveBlindada(){	}
 
 		void pintar_enemigo(SDL_Renderer* renderizador) override {
-			SDL_Rect rectangulo = { x, y, ANCHO_ENEMIGO1, ALTO_ENEMIGO1 };
+			SDL_Rect rectangulo = { x, y, ANCHO_NAVE_BLINDADA, ALTO_NAVE_BLINDADA };
 			if (frameIndex >= 0 && frameIndex < imagenes.size()) {
 				SDL_SetTextureBlendMode(imagenes[frameIndex], SDL_BLENDMODE_BLEND);
 				SDL_RenderCopy(renderizador, imagenes[frameIndex], nullptr, &rectangulo);
@@ -66,7 +66,7 @@ class Enemigo1 : public EnemigoBase {
 
 			int ancho_texto, alto_texto;
 			SDL_QueryTexture(textura_texto, NULL, NULL, &ancho_texto, &alto_texto);
-			SDL_Rect rectangulo_texto = { x + ANCHO_ENEMIGO1 / 2 - ancho_texto / 2, y + ALTO_ENEMIGO1 / 2 - alto_texto / 2, ancho_texto, alto_texto };
+			SDL_Rect rectangulo_texto = { x + ANCHO_NAVE_BLINDADA / 2 - ancho_texto / 2, y + ALTO_NAVE_BLINDADA / 2 - alto_texto / 2, ancho_texto, alto_texto };
 
 			SDL_RenderCopy(renderizador, textura_texto, NULL, &rectangulo_texto);
 
@@ -79,9 +79,11 @@ class Enemigo1 : public EnemigoBase {
 			float deltaTiempo = (tiempo_actual - tiempo_anterior) / 1000.0f;
 			y += velocidad * deltaTiempo;
 			tiempo_anterior = tiempo_actual;
+			float aceleracion = 0.01f * deltaTiempo;
+			velocidad += aceleracion;
 
 			x += direccion ;
-			if ((x > 800 - ANCHO_ENEMIGO1 || x < 0) ) {
+			if ((x > 800 - ANCHO_NAVE_BLINDADA || x < 0) ) {
 				direccion *= -1;
 			}
 
@@ -140,7 +142,7 @@ class Enemigo1 : public EnemigoBase {
 			return vidas;
 		}
 
-		virtual ~Enemigo1() {
+		virtual ~NaveBlindada() {
 			for (auto& textur : imagenes) {
 				SDL_DestroyTexture(textur);
 			}

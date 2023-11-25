@@ -138,8 +138,8 @@
     <ClInclude Include="bala.h" />
     <ClInclude Include="balaTipo1.h" />
     <ClInclude Include="enemigo.h" />
-    <ClInclude Include="enemigo1.h" />
-    <ClInclude Include="enemigo2.h" />
+    <ClInclude Include="nave_blindada.h" />
+    <ClInclude Include="nave_invasora.h" />
     <ClInclude Include="GENERAL.h" />
     <ClInclude Include="imagen.h" />
     <ClInclude Include="misil.h" />

@@ -9,8 +9,8 @@
 #include <string>
 #include "bala.h"
 #include "enemigo.h"
-#include "enemigo2.h"
-#include "enemigo1.h"
+#include "nave_invasora.h"
+#include "nave_blindada.h"
 #include "imagen.h"
 #include "proyectil.h"
 #include "animaciones.h"
@@ -23,9 +23,9 @@ const int ALTO_VENTANAs = 600;
 
 list<Proyectil*> balas;
 list<Proyectil*> misiles;
-list<EnemigoBase*> enemigos1;
-list<EnemigoBase*> enemigos2;
-std::list<Animacion*> animaciones;
+list<EnemigoBase*> list_nave_blindada;
+list<EnemigoBase*> list_nave_invasora;
+list<Animacion*> animaciones;
 
 
 Musica musicas;
@@ -35,7 +35,7 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
     const Uint8* teclas = SDL_GetKeyboardState(nullptr);
 
     if (teclas[SDL_SCANCODE_SPACE] && Bala::alarma(15)) {
-        if (vidas <= 3) {
+        if (vidas <= 4) {
             
             balas.push_back(new Bala(coordenada_x, coordenada_y, renderizador)); 
             balas.push_back(new Bala(coordenada_x + ANCHO_AVION, coordenada_y, renderizador)); 
@@ -62,11 +62,11 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
         }
     }
 
-    if (teclas[SDL_SCANCODE_D] && Bala::alarma(25)) {
-        for (EnemigoBase* enemigor : enemigos1) {
+    if (teclas[SDL_SCANCODE_D] && Bala::alarma(25) && vidas <= 2) {
+        for (EnemigoBase* enemigor : list_nave_blindada) {
             misiles.push_back(new Misil(coordenada_x + (ANCHO_AVION / 2) - 10, coordenada_y, renderizador, enemigor));
         }
-        
+
         musicas.reproducir_sonido_misil();
     }
 
@@ -162,11 +162,11 @@ public:
         Avion avion(ANCHO_VENTANA / 2 - ANCHO_AVION / 2, ALTO_VENTANA / 2 - ALTO_AVION / 2 +100, 6, renderizador);
 
         for (int i = 0; i < 4; i++) {
-            enemigos1.push_back(new Enemigo1(rand() % 800, -800, renderizador, 200, 8));
+            list_nave_blindada.push_back(new NaveBlindada(rand() % 800, -800, renderizador, 200, 8));
         }
 
         for (int i = 0; i < 5; i++) {
-            enemigos2.push_back(new Enemigo2(rand() % 800, -800, renderizador));
+            list_nave_invasora.push_back(new NaveInvasora(rand() % 800, -800, renderizador));
         }
 
 
@@ -240,13 +240,13 @@ public:
 
                 
 
-                for (auto itA = enemigos1.begin(); itA != enemigos1.end(); itA++) {
+                for (auto itA = list_nave_blindada.begin(); itA != list_nave_blindada.end(); itA++) {
                     (*itA)->mover_enemigo(renderizador);
                     (*itA)->choque_enemigo(avion, musicas, renderizador); 
                 }
 
 
-                for (auto ite = enemigos2.begin(); ite != enemigos2.end(); ite++) {
+                for (auto ite = list_nave_invasora.begin(); ite != list_nave_invasora.end(); ite++) {
                     (*ite)->mover_enemigo(renderizador);
                     (*ite)->choque_enemigo(avion, musicas, renderizador);
                 }
@@ -256,7 +256,7 @@ public:
                     bool balaEliminada = false;
                     SDL_Rect rect_bala = (*itB)->getRect();
 
-                    for (auto itE = enemigos1.begin(); itE != enemigos1.end(); ) {
+                    for (auto itE = list_nave_blindada.begin(); itE != list_nave_blindada.end(); ) {
                         SDL_Rect rect_enemigo = (*itE)->getRect();
 
                         if (SDL_HasIntersection(&rect_bala, &rect_enemigo)) {
@@ -267,10 +267,10 @@ public:
                             if ((*itE)->getvidas() == 0) {
                                 delete* itE;
                                 avion.SumarPuntos(10);
-                                itE = enemigos1.erase(itE);
+                                itE = list_nave_blindada.erase(itE);
 
                                 animaciones.push_back(new Animacion((*itB)->getx(), (*itB)->gety()));
-                                enemigos1.push_back(new Enemigo1(rand() % 800, -800, renderizador, 250, 8));
+                                list_nave_blindada.push_back(new NaveBlindada(rand() % 800, -800, renderizador, 250, 8));
                             }
 
                             delete* itB;
@@ -284,17 +284,17 @@ public:
                         }
 
                         // Bucle para enemigo2
-                        for (auto itE2 = enemigos2.begin(); itE2 != enemigos2.end() && !balaEliminada; ) {
+                        for (auto itE2 = list_nave_invasora.begin(); itE2 != list_nave_invasora.end() && !balaEliminada; ) {
                             SDL_Rect rect_enemigo2 = (*itE2)->getRect();
 
                             if (SDL_HasIntersection(&rect_bala, &rect_enemigo2)) {
 
                                 animaciones.push_back(new Animacion((*itE2)->getx(), (*itE2)->gety()));
-                                enemigos2.push_back(new Enemigo2(rand() % 800, -800, renderizador));
+                                list_nave_invasora.push_back(new NaveInvasora(rand() % 800, -800, renderizador));
                                 musicas.reproducir_colision_enemigo1();
 
                                 delete* itE2;
-                                itE2 = enemigos2.erase(itE2);
+                                itE2 = list_nave_invasora.erase(itE2);
                                 avion.SumarPuntos();
 
                                 delete* itB;
@@ -314,13 +314,13 @@ public:
                 } 
                 
                 for (auto itM = misiles.begin(); itM != misiles.end(); ) {
-                    Misil* misil = dynamic_cast<Misil*>(*itM);  // Convertimos proyectil a misl
+                    Misil* misil = dynamic_cast<Misil*>(*itM);  
 
-                    if (misil != NULL) {  // verificamos si la conversion fue exitosa
+                    if (misil != NULL) { 
 
-                        if (std::find(enemigos1.begin(), enemigos1.end(), misil->getObjetivo()) == enemigos1.end()) {
-                            if (!enemigos1.empty()) {
-                                misil->setObjetivo(enemigos1.front());
+                        if (std::find(list_nave_blindada.begin(), list_nave_blindada.end(), misil->getObjetivo()) == list_nave_blindada.end()) {
+                            if (!list_nave_blindada.empty()) {
+                                misil->setObjetivo(list_nave_blindada.front());
                             }
                             else {
                                 misil->setObjetivo(NULL);
@@ -340,7 +340,7 @@ public:
                         bool misilEliminado = false;
                         SDL_Rect rect_misil = (*itM)->getRect();
 
-                        for (auto itE = enemigos1.begin(); itE != enemigos1.end(); ) {
+                        for (auto itE = list_nave_blindada.begin(); itE != list_nave_blindada.end(); ) {
                             SDL_Rect rect_enemigo = (*itE)->getRect();
 
                             if (SDL_HasIntersection(&rect_misil, &rect_enemigo)) {
@@ -351,10 +351,10 @@ public:
                                 misilEliminado = true;
 
                                 animaciones.push_back(new Animacion((*itE)->getx(), (*itE)->gety()));
-                                enemigos1.push_back(new Enemigo1(rand() % 800, -800, renderizador, 250, 8));
+                                list_nave_blindada.push_back(new NaveBlindada(rand() % 800, -800, renderizador, 250, 8));
 
                                 delete* itE;
-                                itE = enemigos1.erase(itE);
+                                itE = list_nave_blindada.erase(itE);
                                 break;
                             }
                             else {

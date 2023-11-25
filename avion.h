@@ -33,7 +33,7 @@ class Avion {
         Avion(int coordenada_x, int coordenada_y, int vidas, SDL_Renderer* renderizador) :
             coordenada_x(coordenada_x), coordenada_y(coordenada_y), vidas(vidas) {
 
-            SDL_Surface* superficie = IMG_Load("imagenes/avion_nuevo.png");
+            SDL_Surface* superficie = IMG_Load("imagenes/avion_moderno.png");
             textura = SDL_CreateTextureFromSurface(renderizador, superficie);
             SDL_FreeSurface(superficie);
         }

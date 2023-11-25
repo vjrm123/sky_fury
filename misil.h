@@ -2,7 +2,6 @@
 #define MISIL_H
 
 #include "proyectil.h"
-#include "enemigo1.h"
 #include "enemigo.h"
 
 const int ANCHO_MISIL = 20;
@@ -10,10 +9,12 @@ const int ALTO_MISIL = 70;
 
 class Misil : public Proyectil {
 private:
+
     EnemigoBase* objetivo = nullptr;
     SDL_Texture* textura = nullptr;
     bool debeSerDestruido = false;
     float velocidad{ 2.0 };
+
 public:
     Misil(int x, int y, SDL_Renderer* renderizador, EnemigoBase* objetivo) : Proyectil(x, y, renderizador), objetivo(objetivo) {
 

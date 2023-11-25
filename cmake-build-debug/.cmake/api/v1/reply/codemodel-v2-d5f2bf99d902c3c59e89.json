@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.26"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "proyecto_SDL_final",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "proyecto_SDL_final::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-proyecto_SDL_final-Debug-90cb1425411b6d11d171.json",
+					"name" : "proyecto_SDL_final",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/HP/Documents/SDL_PROYECTO/proyecto_SDL_final/proyecto_SDL_final/cmake-build-debug",
+		"source" : "C:/Users/HP/Documents/SDL_PROYECTO/proyecto_SDL_final/proyecto_SDL_final"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 5
+	}
+}

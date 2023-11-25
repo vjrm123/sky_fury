@@ -15,7 +15,7 @@ using namespace std;
 const int ALTO_ENEMIGO2 = 60;
 const int ANCHO_ENEMIGO2 = 60;
 
-class Enemigo2 : public EnemigoBase {
+class NaveInvasora : public EnemigoBase {
 
 private:
     int vidas;
@@ -24,14 +24,14 @@ private:
 
 public:
 
-    Enemigo2(int x, int y, SDL_Renderer* renderizador) : EnemigoBase(x, y, renderizador), velocidad_y{ 1 }, vidas{ 6 } {
+    NaveInvasora(int x, int y, SDL_Renderer* renderizador) : EnemigoBase(x, y, renderizador), velocidad_y{ 1 }, vidas{ 6 } {
         
         SDL_Surface* superficie = IMG_Load("imagenes/enemigo2.png");
         textura = SDL_CreateTextureFromSurface(renderizador, superficie);
         SDL_FreeSurface(superficie);
     }
 
-    Enemigo2(){}
+    NaveInvasora(){}
 
     void pintar_enemigo(SDL_Renderer* renderizador) override {
 
@@ -89,11 +89,10 @@ public:
         return vidas;
     }
 
-    ~Enemigo2() {
+    ~NaveInvasora() {
         SDL_DestroyTexture(textura);
     }
 };
-
 
 
 #endif
