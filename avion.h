@@ -6,7 +6,6 @@
 #include "bala.h"
 #include <list>
 #include "bala.h"
-
 #include <SDL_ttf.h>
 
 
@@ -63,8 +62,6 @@ class Avion {
             SDL_Rect rectangulo = { coordenada_x, coordenada_y, ANCHO_AVION, ALTO_AVION };
             SDL_RenderCopy(renderizador, textura, nullptr, &rectangulo);
         }
-
-         
 
         void mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& salir);
 

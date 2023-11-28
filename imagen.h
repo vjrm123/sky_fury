@@ -6,7 +6,6 @@
 #include <string>
 #include "animaciones.h"
 #include <list>
-#include <vector>
 
 
 class Imagen {

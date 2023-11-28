@@ -1,6 +1,5 @@
 #ifndef GENERAL_H
 #define GENERAL_H
-#include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -8,7 +7,6 @@
 #include <vector>
 #include <string>
 #include "bala.h"
-#include "enemigo.h"
 #include "nave_invasora.h"
 #include "nave_blindada.h"
 #include "imagen.h"
@@ -16,8 +14,10 @@
 #include "animaciones.h"
 #include "misil.h"
 #include "balaTipo1.h"
+#include "enemigo.h"
 #include <list>
 #include <SDL_ttf.h>
+#include <fstream>
 const int ANCHO_VENTANAs = 800;
 const int ALTO_VENTANAs = 600;
 
@@ -41,6 +41,12 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
             balas.push_back(new Bala(coordenada_x + ANCHO_AVION, coordenada_y, renderizador)); 
             balas.push_back(new BalaTipo1(coordenada_x + (ANCHO_AVION / 2) - 10, coordenada_y, renderizador));
         }
+        if (vidas <= 2) {
+            balas.push_back(new Bala(coordenada_x, coordenada_y, renderizador));
+            balas.push_back(new Bala(coordenada_x + ANCHO_AVION, coordenada_y, renderizador));
+            balas.push_back(new BalaTipo1(coordenada_x + (ANCHO_AVION / 2) - 30, coordenada_y, renderizador));
+            balas.push_back(new BalaTipo1(coordenada_x + (ANCHO_AVION / 2) + 20, coordenada_y, renderizador));
+        }
         else {
             
             balas.push_back(new Bala(coordenada_x + (ANCHO_AVION / 2) - 10, coordenada_y, renderizador));
@@ -62,11 +68,10 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
         }
     }
 
-    if (teclas[SDL_SCANCODE_D] && Bala::alarma(25) && vidas <= 2) {
+    if (teclas[SDL_SCANCODE_D] && Bala::alarma(25) && vidas <= 3) {
         for (EnemigoBase* enemigor : list_nave_blindada) {
             misiles.push_back(new Misil(coordenada_x + (ANCHO_AVION / 2) - 10, coordenada_y, renderizador, enemigor));
         }
-
         musicas.reproducir_sonido_misil();
     }
 
@@ -77,6 +82,7 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
         }
     }
     if (teclas[SDL_SCANCODE_LEFT]) {
+
         if (coordenada_x > 0) {
             coordenada_x -= 2;
         }
@@ -99,8 +105,31 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
     pintar_avion(renderizador);
 }
 
+void almacenar_Puntaje(int puntaje) {
+    std::ofstream archivo("puntajes.txt", std::ios::app); 
+    if (archivo.is_open()) {
+        archivo << puntaje << std::endl; 
+        archivo.close();
+    }
+}
 
+std::vector<int> leerPuntajes_Maximos() {
+    std::vector<int> puntajes;
+    std::ifstream archivo("puntajes.txt");
+    if (archivo.is_open()) {
+        int puntaje;
+        while (archivo >> puntaje) {
+            puntajes.push_back(puntaje);
+        }
+        archivo.close();
+    }
+    std::sort(puntajes.begin(), puntajes.end(), std::greater<int>());
 
+    if (puntajes.size() > 5) {
+        puntajes.resize(5);
+    }
+    return puntajes;
+}
 
 
 class GENERAL
@@ -112,19 +141,16 @@ public:
         IMG_Init(IMG_INIT_PNG);
 
         TTF_Init();
-        TTF_Font* fuente = TTF_OpenFont("letras.ttf", 20);
+        TTF_Font* fuente = TTF_OpenFont("letras.ttf", 40);
 
         
 
 
         SDL_Window* ventana = SDL_CreateWindow("        VENTANA DE SKY FURY        ", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA, ALTO_VENTANA, SDL_WINDOW_SHOWN);
         SDL_Renderer* renderizador = SDL_CreateRenderer(ventana, -1, 0);
+        SDL_Texture* textura_fondo = IMG_LoadTexture(renderizador, "imagenes/fondo.JPG");
 
-        // Supongamos que tienes las siguientes variables
-        SDL_Texture* textura_fondo = IMG_LoadTexture(renderizador, "imagenes/fondo1.png");
-
-        /*comensar*/
-        
+        /*comensar*/ 
 
         SDL_Surface* superficie_boton = IMG_Load("imagenes/menu.png");
         SDL_Texture* textura_boton = SDL_CreateTextureFromSurface(renderizador, superficie_boton);
@@ -171,7 +197,7 @@ public:
 
 
         Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-        Mix_Music* musica = Mix_LoadMUS("sonidos/sonido_fondo.MPEG");
+        Mix_Music* musica = Mix_LoadMUS("sonidos/misions.MPEG");
 
 
         SDL_Event evento;
@@ -270,7 +296,7 @@ public:
                                 itE = list_nave_blindada.erase(itE);
 
                                 animaciones.push_back(new Animacion((*itB)->getx(), (*itB)->gety()));
-                                list_nave_blindada.push_back(new NaveBlindada(rand() % 800, -800, renderizador, 250, 8));
+                                list_nave_blindada.push_back(new NaveBlindada(rand() % 800, -800, renderizador, 250, 20));
                             }
 
                             delete* itB;
@@ -351,7 +377,7 @@ public:
                                 misilEliminado = true;
 
                                 animaciones.push_back(new Animacion((*itE)->getx(), (*itE)->gety()));
-                                list_nave_blindada.push_back(new NaveBlindada(rand() % 800, -800, renderizador, 250, 8));
+                                list_nave_blindada.push_back(new NaveBlindada(rand() % 800, -800, renderizador, 250, 20));
 
                                 delete* itE;
                                 itE = list_nave_blindada.erase(itE);
@@ -380,7 +406,7 @@ public:
             }
             
 
-            SDL_Color color = { 0, 0, 0 };
+            SDL_Color color = { 250, 250, 250 };
             std::string texto = "Vidas: " + std::to_string(avion.getvidas());
             
             SDL_Surface* superficie_texto = TTF_RenderText_Solid(fuente, texto.c_str(), color);
@@ -395,7 +421,7 @@ public:
             SDL_DestroyTexture(textura_texto);
 
 
-            SDL_Color colors = { 0, 0, 0 };
+            SDL_Color colors = { 250, 250, 250 };
             std::string textos = "Puntos: " + std::to_string(avion.getPuntos());
 
             SDL_Surface* superficie_textos = TTF_RenderText_Solid(fuente, textos.c_str(), colors);
@@ -419,13 +445,34 @@ public:
 
             if (avion.getvidas() == 0) {
                 imagenes.mostrar_Mensaje_Perdiste(renderizador);
+                SDL_RenderClear(renderizador);
+                almacenar_Puntaje(avion.getPuntos());
+
+                std::vector<int> puntajesMaximos = leerPuntajes_Maximos();
+                SDL_Color colore = { 255, 255, 255 };
+
+                for (int i = 0; i < puntajesMaximos.size(); i++) {
+                    std::string textoMaximo = "Puntaje mas alto " + std::to_string(i + 1) + ": " + std::to_string(puntajesMaximos[i]);
+
+                    SDL_Surface* superficieMaximo = TTF_RenderText_Solid(fuente, textoMaximo.c_str(), colore);
+                    SDL_Texture* texturaMaximo = SDL_CreateTextureFromSurface(renderizador, superficieMaximo);
+
+                    int anchoMaximo = 20, altoMaximo = 20;
+                    SDL_QueryTexture(texturaMaximo, NULL, NULL, &anchoMaximo, &altoMaximo);
+                    SDL_Rect rectMaximo = { ANCHO_VENTANA / 2 - 200, ALTO_VENTANA / 2 - 200 + i * altoMaximo, anchoMaximo, altoMaximo };
+                    SDL_RenderCopy(renderizador, texturaMaximo, NULL, &rectMaximo);
+
+                    SDL_FreeSurface(superficieMaximo);
+                    SDL_DestroyTexture(texturaMaximo);
+                }
+
+                SDL_RenderPresent(renderizador); 
+
+                SDL_Delay(10000);
                
                 salir = true;
             }
-
         }
-
-
         SDL_Quit();
         IMG_Quit();
         TTF_Quit();

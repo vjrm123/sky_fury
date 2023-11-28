@@ -1,7 +1,6 @@
 #ifndef BALATIPO1_H
 #define BALATIPO1_H
 #include "bala.h"
-#include <vector>
 
 class BalaTipo1 : public Bala {
 public:

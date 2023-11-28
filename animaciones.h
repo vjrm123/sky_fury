@@ -5,7 +5,6 @@
 #include <SDL_image.h>
 #include <string>
 #include <list>
-#include<vector>
 
 class Animacion {
 
@@ -29,8 +28,8 @@ public:
         SDL_Rect rect;
         rect.x = x;
         rect.y = y;
-        rect.w = 120;
-        rect.h = 120;
+        rect.w = 150;
+        rect.h = 150;
 
         SDL_RenderCopy(renderizador, textura, NULL, &rect);
         SDL_DestroyTexture(textura);

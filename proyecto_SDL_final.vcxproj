@@ -145,6 +145,7 @@
     <ClInclude Include="misil.h" />
     <ClInclude Include="musica.h" />
     <ClInclude Include="proyectil.h" />
+    <ClInclude Include="puntajes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

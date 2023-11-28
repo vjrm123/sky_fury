@@ -9,7 +9,6 @@
 #include "bala.h"
 #include "enemigo.h"
 #include <random>
-#include <vector>
 
 using namespace std;
  

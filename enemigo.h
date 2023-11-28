@@ -6,7 +6,6 @@
 #include <cstdlib>
 #include "avion.h"
 #include "musica.h"
-#include <vector>
 
 class EnemigoBase {
 protected:
