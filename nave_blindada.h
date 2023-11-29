@@ -74,7 +74,7 @@ class NaveBlindada : public EnemigoBase {
 			SDL_DestroyTexture(textura_texto);
 		}
 
-		void mover_enemigo(SDL_Renderer* renderizador) {
+		void mover_enemigo(SDL_Renderer* renderizador) override{
 			Uint32 tiempo_actual = SDL_GetTicks();
 			float deltaTiempo = (tiempo_actual - tiempo_anterior) / 1000.0f;
 			y += velocidad * deltaTiempo;
@@ -96,7 +96,7 @@ class NaveBlindada : public EnemigoBase {
 			}
 
 			frameTime++;
-			if (frameTime >= 100) {
+			if (frameTime >= 10) {
 				frameIndex++;
 				frameTime = 0;
 			}
@@ -140,7 +140,7 @@ class NaveBlindada : public EnemigoBase {
 			return vidas;
 		}
 
-		virtual ~NaveBlindada() {
+		~NaveBlindada() {
 			for (auto& textur : imagenes) {
 				SDL_DestroyTexture(textur);
 			}

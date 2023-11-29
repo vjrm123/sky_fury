@@ -23,8 +23,6 @@ class Avion {
         unsigned int puntos = 0;
         SDL_Texture* textura = nullptr;
         
-
-
     public:
         
 

@@ -27,7 +27,6 @@ list<EnemigoBase*> list_nave_blindada;
 list<EnemigoBase*> list_nave_invasora;
 list<Animacion*> animaciones;
 
-
 Musica musicas;
 Imagen imagenes;
 
@@ -41,7 +40,7 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
             balas.push_back(new Bala(coordenada_x + ANCHO_AVION, coordenada_y, renderizador)); 
             balas.push_back(new BalaTipo1(coordenada_x + (ANCHO_AVION / 2) - 10, coordenada_y, renderizador));
         }
-        if (vidas <= 2) {
+        if (vidas <= 3) {
             balas.push_back(new Bala(coordenada_x, coordenada_y, renderizador));
             balas.push_back(new Bala(coordenada_x + ANCHO_AVION, coordenada_y, renderizador));
             balas.push_back(new BalaTipo1(coordenada_x + (ANCHO_AVION / 2) - 30, coordenada_y, renderizador));
@@ -100,10 +99,9 @@ void Avion:: mover_avion(SDL_Renderer* renderizador, SDL_Event evento, bool& sal
             coordenada_y += 1;
         }
     }
-
-
     pintar_avion(renderizador);
 }
+
 
 void almacenar_Puntaje(int puntaje) {
     std::ofstream archivo("puntajes.txt", std::ios::app); 
@@ -144,8 +142,6 @@ public:
         TTF_Font* fuente = TTF_OpenFont("letras.ttf", 40);
 
         
-
-
         SDL_Window* ventana = SDL_CreateWindow("        VENTANA DE SKY FURY        ", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, ANCHO_VENTANA, ALTO_VENTANA, SDL_WINDOW_SHOWN);
         SDL_Renderer* renderizador = SDL_CreateRenderer(ventana, -1, 0);
         SDL_Texture* textura_fondo = IMG_LoadTexture(renderizador, "imagenes/fondo.JPG");
@@ -225,7 +221,6 @@ public:
                         musicas.reproducir_boton();
                         SDL_FreeSurface(superficie_3); 
 
-                        SDL_RenderClear(renderizador);
                         SDL_RenderCopy(renderizador, textura_2, nullptr, &rect_contador);
                         SDL_RenderPresent(renderizador);
                         SDL_Delay(1000); 

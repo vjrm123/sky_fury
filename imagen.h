@@ -4,14 +4,11 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
-#include "animaciones.h"
-#include <list>
 
 
 class Imagen {
     private:
         SDL_Renderer* renderizador = nullptr;
-        std::list<Animacion> animaciones;
 
     public:
         void mostrar_Mensaje_Perdiste(SDL_Renderer* renderizador) {

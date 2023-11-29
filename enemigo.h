@@ -32,7 +32,7 @@ public:
 
     virtual void mover_enemigo(SDL_Renderer* renderizador) =0;
     virtual void pintar_enemigo(SDL_Renderer* renderizador) =0;
-    virtual void choque_enemigo(Avion& aviones, Musica& musica, SDL_Renderer* renderizador) =0;
+    virtual void choque_enemigo(Avion& aviones, Musica& musica, SDL_Renderer* renderizador) = 0;
     virtual void reducirVida(unsigned int cantidad = 1) =0;
     virtual int getvidas() const = 0;
 }; 

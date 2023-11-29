@@ -19,7 +19,7 @@ private:
 public:
     Musica() {
         Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-        sonido_disparo = Mix_LoadWAV("disparo.wav");
+        //sonido_disparo = Mix_LoadWAV("disparo.wav");
         sonido_colision = Mix_LoadWAV("sonidos/Explosion.wav");
         sonido_misil = Mix_LoadWAV("sonidos/sonido_misil.wav");
         sonido_boton = Mix_LoadWAV("sonidos/Button.wav");
@@ -61,7 +61,5 @@ public:
     void reproducir_colision_enemigo1() {
         Mix_PlayChannel(-1, sonido_colision_enemigo1, 0);
     }
-
-
 };
 #endif
